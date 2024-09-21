@@ -3,19 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <title>Contact Form</title>
+    <style>
+      body {
+        background-color: #7a766a;
+      }
+      label {
+        color: #f5f2eb;
+        /* margin-left: 10px; */
+        /* border-radius: 15px; */
+      }
+      h1 {
+        /* font-size: 40px; */
+        color: #f5f2eb;
+        /* margin-left: 50px; */
+      }
+      input {
+        background-color: #d9d4c7;
+        border-radius: 15px;
+      }
+      input.background {
+        background-color: #d9d4c7;
+        /* border-radius: 15px; */
+      }
+      textarea {
+        background-color: #d9d4c7;
+        /* margin-left: 10px; */
+        border-radius: 15px;
+      }
+      button {
+        background-color: #d9d4c7;
+        border-radius: 15px;
+      }
+      form {
+        background-color: #4a4947;
+        width: 400px;
+        border-radius: 25px;
+        padding: 7px;
+      }
+      div.forms {
+        float: left;
+      }
+      div.display {
+        float: right;
+        margin-right: 100px;
+      }
+      /* table {
+        float: right;
+      } */
+    </style>
   </head>
   <body>
-    <h1>Contact Form</h1>
+  <div class="forms">
+    <h1><i><u>New Superheroes</u></i></h1>
     <form action="/submit-form" method="POST">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required /><br /><br />
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required /><br /><br />
-      <label for="message">Message:</label><br />
+      <label for="superHeroName">Superhero Name:</label>
+      <input type="text" id="superHeroName" class="background" name="superHeroName" required /><br /><br />
+      <label for="universe">Universe:</label>
+      <input type="text" id="universe" class="background" name="universe" required /><br /><br />
+      <label for="superPowers">Superpowers:</label><br />
       <textarea
-        id="message"
-        name="message"
+        id="superPowers"
+        name="superPowers"
         rows="4"
         cols="50"
         required
@@ -23,48 +73,51 @@
       ><br /><br />
       <input type="submit" value="Submit" />
     </form>
-    <h1>User Management</h1>
+    <h1><i><u>Superhero Management</u></i></h1>
     <form id="updateForm">
-      <label for="currentName">Current name:</label>
-      <input type="text" id="currentName" required /><br /><br />
-      <label for="currentEmail">Current email:</label>
-      <input type="email" id="currentEmail" required /><br /><br />
-      <label for="newName">New name:</label>
-      <input type="text" id="newName" required /><br /><br />
-      <label for="newEmail">New email:</label>
-      <input type="email" id="newEmail" required /><br /><br />
-      <button type="submit">Update User</button>
+      <label for="currentSuperHeroName">Current Superhero Name:</label>
+      <input type="text" id="currentSuperHeroName" class="background"  required /><br /><br />
+      <label for="currentUniverse">Current universe:</label>
+      <input type="text" id="currentUniverse" class="background" required /><br /><br />
+      <label for="newSuperHeroName">New Superhero name:</label>
+      <input type="text" id="newSuperHeroName" class="background" required /><br /><br />
+      <label for="newUniverse">New Universe:</label>
+      <input type="text" id="newUniverse" class="background" required /><br /><br />
+      <button type="submit">Update Superhero</button>
     </form>
-    <h1>Show Users</h1>
+  </div>
+  <div class="display">
+    <h1><i><u>Show Heros</u></i></h1>
     <table id="usersTable">
       <thead>
         <tr>
-          <th>User Name</th>
-          <th>User Email</th>
+          <th>Superhero Name</th>
+          <th>Superhero Universe</th>
         </tr>
       </thead>
       <tbody id="userTableBody">
         <!-- data of users will be rendered here -->
       </tbody>
     </table>
+  </div>
     <script>
       document
         .getElementById("updateForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
-          const currentName = document.getElementById("currentName").value;
-          const currentEmail = document.getElementById("currentEmail").value;
-          const newName = document.getElementById("newName").value;
-          const newEmail = document.getElementById("newEmail").value;
+          const currentSuperHeroName = document.getElementById("currentSuperHeroName").value;
+          const currentUniverse = document.getElementById("currentUniverse").value;
+          const newSuperHeroName = document.getElementById("newSuperHeroName").value;
+          const newUniverse = document.getElementById("newUniverse").value;
           try {
             const response = await fetch(
-              `/update-user/${currentName}/${currentEmail}`,
+              `/update-user/${currentSuperHeroName}/${currentUniverse}`,
               {
                 method: "PUT",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ newName, newEmail }),
+                body: JSON.stringify({ newSuperHeroName, newUniverse }),
               }
             );
             const data = await response.json();
@@ -72,7 +125,7 @@
             renderUsers();
             // alert("Message is: " + data.message);
           } catch (error) {
-            alert("Error updating user: " + error.message);
+            alert("Error updating user: " + error.superPowers);
           }
         });
       async function fetchUsers() {
@@ -100,7 +153,7 @@
           const users = await fetchUsers();
           if (Array.isArray(users) && users.length > 0) {
             users.forEach((user) => {
-              const row = `<tr><td>${user.name}</td><td>${user.email}</td></tr>`;
+              const row = `<tr><td>${user.superHeroName}</td><td>${user.universe}</td></tr>`;
               tableBody.innerHTML += row;
             });
           }
